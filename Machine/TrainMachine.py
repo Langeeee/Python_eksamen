@@ -56,7 +56,7 @@ class machine_trainer:
         model.fit(
           train_ds,
           validation_data=val_ds,
-          epochs=5
+          epochs=51
         )
     #https://www.tensorflow.org/tutorials/load_data/images
 
