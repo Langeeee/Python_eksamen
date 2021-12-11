@@ -1,0 +1,9 @@
+1638801613734	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilerhaD7e"
+Unable to init server: Broadway display type not supported: unix
+Error: cannot open display: unix
+1638801620789	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile3E76RI"
+Unable to init server: Broadway display type not supported: unix
+Error: cannot open display: unix
+1638801640412	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileFaCCdI"
+Unable to init server: Broadway display type not supported: unix
+Error: cannot open display: unix
