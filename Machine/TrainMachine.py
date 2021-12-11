@@ -4,6 +4,9 @@ import numpy as np
 import matplotlib as plt
 import tensorflow as tf
 
+
+
+
 class machine_trainer:
 
     def __init__(self) -> None:
