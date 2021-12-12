@@ -33,10 +33,14 @@ class machine_trainer_test:
 
         model.fit(x_train, y_train, epochs = 3)
 
-        loss, accuracy = model.evaluate(evaluation)
+        train_loss, train_accuracy = model.evaluate(x_train, y_train)
+        val_loss, val_accuracy = model.evaluate(x_test, y_test)
 
-        print(loss)
-        print(accuracy)
+
+        print("training loss: " + str(train_loss))
+        print("val_loss: " + str(val_loss))
+        print("training accuracy: " + str(train_accuracy))
+        print("val accuracy: " + str(val_accuracy))
 
         model.save('handwritten.model')
 

@@ -58,5 +58,16 @@ class machine_trainer:
           validation_data=val_ds,
           epochs=51
         )
+
+        train_loss, train_accuracy = model.evaluate(train_ds)
+        val_loss, val_accuracy = model.evaluate(val_ds)
+
+
+        print("training loss: " + str(train_loss))
+        print("val_loss: " + str(val_loss))
+        print("training accuracy: " + str(train_accuracy))
+        print("val accuracy: " + str(val_accuracy))
+
+        model.save('verifiedCaptcha.model')
     #https://www.tensorflow.org/tutorials/load_data/images
 
