@@ -2,7 +2,6 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 
-
 class charts:
 
     def __init__(self) -> None:
