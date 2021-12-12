@@ -6,6 +6,7 @@ import tensorflow as tf
 import os
 from os import listdir
 from os.path import isfile, join
+import traceback
 
 class machine_trainer_test:
 
@@ -44,34 +45,21 @@ class machine_trainer_test:
 
         model.save('handwritten.model')
 
-
-
     def get_keras_model(self):
         return tf.keras.models.load_model('handwritten.model')
-
-
+        
     def check_images(self, model, image_number):
         mypath = '/home/jovyan/Python_eksamen/Images/CutImages/' + str(image_number)
         onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-       # print(onlyfiles)
         for x in range(5):
-           
             try:
-                 
                 img = cv2.imread(mypath + '/' + onlyfiles[x])[:,:,0]
                 img2 = np.invert(np.array([img]))
                 prediction = model.predict(img2)
 
                 plt.imshow(img, cmap=plt.cm.binary)
-               
                 plt.title(f"this digit is probably a {np.argmax(prediction)}")
-               # fig.suptitle(f"this digit is probably a {np.argmax(prediction)}", fontsize=16)
-                
                 plt.figure()
-                
-               # print(f"this digit is probably a {np.argmax(prediction)}")
-                
-            except: 
-                
+            except:  
                 traceback.print_exc()
             

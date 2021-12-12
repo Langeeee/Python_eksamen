@@ -6,7 +6,6 @@ class NumberGenerator:
 
     def generateSequence(self, length):
         numbers = [int(x) for x in str(length)]
-        print(numbers)
         returnVal = ""
         i = 0
         while(i<4): 
