@@ -40,6 +40,7 @@ class machine_trainer:
 
     def train_and_save_model(self, train_ds, val_ds, model_name, epoch_amt):
         num_classes = 10
+        
         model = tf.keras.Sequential([
           tf.keras.layers.Rescaling(1./255),
           tf.keras.layers.Conv2D(32, 3, activation='relu'),
@@ -68,12 +69,13 @@ class machine_trainer:
         print("val_loss: " + str(val_loss))
         print("training accuracy: " + str(train_accuracy))
         print("val accuracy: " + str(val_accuracy))
-
         model.save(model_name + '.model')
 
 
-    def make_and_save_mnist_model(self):
+        return train_accuracy, val_accuracy
 
+
+    def make_and_save_mnist_model(self):
         mnist = tf.keras.datasets.mnist
         (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -132,5 +134,19 @@ class machine_trainer:
                 plt.figure()
             except:  
                 traceback.print_exc()
+
+    def test_mnist(self, model, image_number):
+        mypath = '/home/jovyan/Python_eksamen/Images/CutImages/' + str(image_number)
+        onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+        right = 0
+        total = 0
+        for x, files in enumerate(onlyfiles):
+          img = cv2.imread(mypath + '/' + onlyfiles[x])[:,:,0]
+          img2 = np.invert(np.array([img]))
+          prediction = model.predict(img2)
+          if np.argmax(prediction) == image_number:
+            right += 1
+          total += 1
+        return (right, total)
     #https://www.tensorflow.org/tutorials/load_data/images
 

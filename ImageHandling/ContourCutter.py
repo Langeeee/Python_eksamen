@@ -1,13 +1,24 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import cv2
+import pytesseract
+from pytesseract import image_to_string
+import easyocr
+from PIL import Image
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 class ContourCutter:
  
     def __init__(self):
         print()
 
-    def contourScraped(self, image, image_value, iteration):
+    def make_easy_ocr(self):
+        reader = easyocr.Reader(lang_list=['en'])
+        return reader
+
+    def contourScraped(self, image, image_value, iteration, reader):
+       
         img = cv2.imread('/home/jovyan/Python_eksamen/Images/Scraped/' + image)
         image_for_saving = img
         kernel = np.ones((1,1), np.float32)/1
@@ -22,7 +33,7 @@ class ContourCutter:
             img_grey = cv2.cvtColor(img_eroded, cv2.COLOR_BGR2GRAY)
             ret, thresh_H = cv2.threshold(img_grey, thresh, 20, 0)
             _, binary = cv2.threshold(img_grey, thresh, 255, cv2.THRESH_BINARY_INV)
-            (_, contours, hierarchy) = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            ( contours, hierarchy) = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             
 
             cv2.drawContours(img, contours, -1, (0,0,0), 1)
@@ -54,7 +65,7 @@ class ContourCutter:
                     x, y, width, height = cv2.boundingRect(c)
                     roi = image_for_saving[y: y + height, x: x + width]
                     resized_image = cv2.resize(roi, (28, 28))
-                    list_of_files.append(("/home/jovyan/Python_eksamen/Images/Scraped/CutImages/"+str(image_value[count])+"/"+str(image_value[count])+"("+str(iteration)+").jpg", resized_image))
+                    list_of_files.append(("/home/jovyan/Python_eksamen/Images/ScrapedCutImages/"+str(image_value[count])+"/"+str(image_value[count])+"("+str(iteration)+").jpg", resized_image))
                     count+=1
         
         make_list_of_files(dst, sorted_ctrs, list_of_files_to_write, threshold_area, max_area, count, image_for_saving)
@@ -71,12 +82,17 @@ class ContourCutter:
             make_list_of_files(dst, sorted_ctrs, list_of_files_to_write, threshold_area, max_area, count, image_for_saving)
 
         if(len(list_of_files_to_write) == img_length):
+            img_text = reader.readtext('/home/jovyan/Python_eksamen/Images/Scraped/' + image, detail = 0)
+            listToStr = ' '.join([str(elem) for elem in img_text])
+            print("IAMGES TEXT: " + listToStr)
+            #pytesseract.pytesseract.tesseract_cmd = r'/home/jovyan/Python_eksamen/Tesseract/tesseract.exe'
+            #tessdata_dir_config = r'/home/jovyan/Python_eksamen/Tesseract/tessdata/eng.traineddata'
+            #print(pytesseract.image_to_string(Image.open(r'/home/jovyan/Python_eksamen/Images/Scraped/' + image), config = tessdata_dir_config, lang='eng'))
             for index, tuples in enumerate(list_of_files_to_write):
-                print(tuples[0])
-                cv2.imwrite(tuples[0],tuples[1])
-
-
-
+                if("?" not in listToStr):
+                    #print(tuples[0])
+                    cv2.imwrite(tuples[0],tuples[1])
+               
     def contour2(self, image, image_value, iteration):
         img = cv2.imread('/home/jovyan/Python_eksamen/Images/' + image)
         image_for_saving = img
@@ -142,6 +158,8 @@ class ContourCutter:
 
         if(len(list_of_files_to_write) == img_length):
             for index, tuples in enumerate(list_of_files_to_write):
-                print(tuples[0])
-                cv2.imwrite(tuples[0],tuples[1])
+                img_text = pytesseract.image_to_string(img)
+                if("?" not in img_text):
+                    print(tuples[0])
+                    cv2.imwrite(tuples[0],tuples[1])
         
