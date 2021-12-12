@@ -1,8 +1,6 @@
 from matplotlib import pyplot as plt
 import numpy as np
 import cv2
-import time
-import os
 
 class ContourCutter:
     def tester():
@@ -147,12 +145,11 @@ class ContourCutter:
                 area = cv2.contourArea(c)
                 if (area > threshold) and (area < max) :
                     x, y, width, height = cv2.boundingRect(c)
-                    #image_for_saving = dst
                     roi = image_for_saving[y: y + height, x: x + width]
                     resized_image = cv2.resize(roi, (28, 28))
                     list_of_files.append(("/home/jovyan/Python_eksamen/Images/CutImages/"+str(image_value[count])+"/"+str(image_value[count])+"("+str(iteration)+").jpg", resized_image))
-                    #cv2.imwrite("/home/jovyan/Python_eksamen/Images/CutImages/"+str(image_value[count])+"/"+str(image_value[count])+"("+str(iteration)+").jpg", resized_image)
                     count+=1
+        
         make_list_of_files(dst, sorted_ctrs, list_of_files_to_write, threshold_area, max_area, count, image_for_saving)
         img_length = image_value.split("(")
         img_length = len(img_length[0])
